@@ -3,7 +3,7 @@
 </h1>
 
 <ol class="breadcrumb">
-  <li><a href="?c=producto">Productos</a></li>
+  <li><a href="?c=producto">Productos 123</a></li>
   <li class="active"><?php echo $prod->idProducto != null ? $prod->nomprod : 'Nuevo Registro'; ?></li>
 </ol>
 
