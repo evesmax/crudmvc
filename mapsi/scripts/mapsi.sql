@@ -78,8 +78,8 @@ ALTER TABLE `inventario`
 DROP TABLE IF EXISTS  `bitacoraUsuarios`;
 CREATE TABLE `bitacoraUsuarios` (
   idCambio int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `idUsuario` int(10) UNSIGNED NOT NULL,
-  `idCuenta` int(10) UNSIGNED NOT NULL,
+  `idUsuario` int(10) UNSIGNED,
+  `idCuenta` int(10) UNSIGNED,
   `Cambio` text
 );
 
@@ -90,7 +90,7 @@ ALTER TABLE `bitacoraUsuarios`
 ALTER TABLE `bitacoraUsuarios`
     ADD Constraint `usuario_modificado`
     FOREIGN KEY (`idCuenta`) REFERENCES usuarios(`idUs`);
-
+    
 /*Stored Procedures-----------------------------------------------------------------------------------------------------------------*/
  /*Agregar Usuario*/
 DELIMITER $$
