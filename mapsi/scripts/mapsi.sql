@@ -75,13 +75,13 @@ ALTER TABLE `inventario`
     ADD Constraint `proveedor_inventario`
     FOREIGN KEY (`idProv`) REFERENCES proveedor(`idProv`);
  
+DROP TABLE IF EXISTS  `bitacoraUsuarios`;
 CREATE TABLE `bitacoraUsuarios` (
-  idCambio int(10) UNSIGNED NOT NULL PRIMARY KEY,
+  idCambio int(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `idUsuario` int(10) UNSIGNED NOT NULL,
   `idCuenta` int(10) UNSIGNED NOT NULL,
   `Cambio` text
 );
-
 
 ALTER TABLE `bitacoraUsuarios`
     ADD Constraint `usuario_cuenta`
