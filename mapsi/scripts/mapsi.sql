@@ -133,6 +133,20 @@ BEGIN
 	UPDATE usuarios SET nivel = 3 WHERE idUs = id;
 END $$
 
+DELIMITER $$
+DROP FUNCTION IF EXISTS  mod_prod$$
+CREATE FUNCTION mod_prod(cuenta varchar(30), contr varchar(30))
+  RETURNS boolean
+BEGIN
+	DECLARE ret int;
+  	SET ret = (SELECT COUNT(idUs) FROM usuarios WHERE usuario = cuenta AND contrasena = contr);
+    IF ret > 0 THEN
+    	RETURN TRUE;
+    ELSE RETURN FALSE;
+    END IF;
+END $$
+DELIMITER ;
+
 /*Usuario Dummy*/
 CALL agregarUsuario('c', 'n', 'p', 'p', '+52', 1);
 CALL agregarUsuario('a', 'p', 'c', 'r', '+5256152', 1);
