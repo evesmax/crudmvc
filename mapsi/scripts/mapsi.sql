@@ -134,8 +134,8 @@ BEGIN
 END $$
 
 DELIMITER $$
-DROP FUNCTION IF EXISTS  mod_prod$$
-CREATE FUNCTION mod_prod(cuenta varchar(30), contr varchar(30))
+DROP FUNCTION IF EXISTS  verifUsuario$$
+CREATE FUNCTION verifUsuario(cuenta varchar(30), contr varchar(30))
   RETURNS boolean
 BEGIN
 	DECLARE ret int;
