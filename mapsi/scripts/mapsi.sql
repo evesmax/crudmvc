@@ -75,7 +75,21 @@ ALTER TABLE `inventario`
     ADD Constraint `proveedor_inventario`
     FOREIGN KEY (`idProv`) REFERENCES proveedor(`idProv`);
  
-CEA
+CREATE TABLE `bitacoraUsuarios` (
+  idCambio int(10) UNSIGNED NOT NULL PRIMARY KEY,
+  `idUsuario` int(10) UNSIGNED NOT NULL,
+  `idCuenta` int(10) UNSIGNED NOT NULL,
+  `Cambio` text
+);
+
+
+ALTER TABLE `bitacoraUsuarios`
+    ADD Constraint `usuario_cuenta`
+    FOREIGN KEY (`idUsuario`) REFERENCES usuarios(`idUs`);
+    
+ALTER TABLE `bitacoraUsuarios`
+    ADD Constraint `usuario_modificado`
+    FOREIGN KEY (`idCuenta`) REFERENCES usuarios(`idUs`);
 
 /*Stored Procedures-----------------------------------------------------------------------------------------------------------------*/
  /*Agregar Usuario*/
