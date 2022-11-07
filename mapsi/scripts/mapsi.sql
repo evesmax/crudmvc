@@ -147,6 +147,28 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+DROP TRIGGER IF EXISTS llenarBitacora$$
+CREATE TRIGGER llenarBitacora
+AFTER INSERT
+ON usuarios FOR EACH ROW
+BEGIN
+	DECLARE cambio varchar(100);
+    SET cambio = "agregarUsuario(" + new.idUs + "," + new.usuario + "," + new.contrasena + "," + new.nombres + "," + new.apellido + "," + new.telefono + "," + new.nivel + ")";
+	INSERT INTO `bitacorausuarios`(`idCuenta`, `Cambio`) VALUES (new.idUs,cambio);
+END $$
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS llenarBitacoraMod$$
+CREATE TRIGGER llenarBitacoraMod
+AFTER INSERT
+ON usuarios FOR EACH ROW
+BEGIN
+	DECLARE cambio varchar(100);
+    SET cambio = "modificarUsuario(" + new.idUs + "," + new.usuario + "," + new.contrasena + "," + new.nombres + "," + new.apellido + "," + new.telefono + "," + new.nivel + ")";
+	INSERT INTO `bitacorausuarios`(`idCuenta`, `Cambio`) VALUES (new.idUs,cambio);
+END $$
+
 /*Usuario Dummy*/
 CALL agregarUsuario('c', 'n', 'p', 'p', '+52', 1);
 CALL agregarUsuario('a', 'p', 'c', 'r', '+5256152', 1);
