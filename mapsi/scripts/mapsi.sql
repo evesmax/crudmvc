@@ -141,8 +141,8 @@ BEGIN
 	DECLARE ret int;
   	SET ret = (SELECT COUNT(idUs) FROM usuarios WHERE usuario = cuenta AND contrasena = contr);
     IF ret > 0 THEN
-    	RETURN TRUE;
-    ELSE RETURN FALSE;
+    	RETURN ret;
+    ELSE RETURN ret;
     END IF;
 END $$
 DELIMITER ;
