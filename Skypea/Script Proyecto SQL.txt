@@ -1,0 +1,129 @@
+DROP DATABASE IF EXISTS skypea;
+CREATE DATABASE skypea;
+USE skypea;
+
+DROP TABLE IF EXISTS semestres;
+CREATE TABLE semestres (
+	id_semestre INT  NOT NULL AUTO_INCREMENT,
+    nombre_semestre VARCHAR (50) NOT NULL,
+    PRIMARY KEY (id_semestre)
+);
+/*AGREGAR LOS 9 SEMESTRES A LA TABLA SEMESTRES, DE FORMA MANUAL PARA  NO
+CAUSAR ERRORES DESPUES, YA QUE SOLO SON 9 SEMESTRES, SEA LA CARRERA O MODO QUE SEA*/
+INSERT INTO semestres(nombre_semestre)
+VALUES
+("Primero"),
+("Segundo"),
+("Tercero"),
+("Cuarto"),
+("Quinto"),
+("Sexo"),
+("Septimo"),
+("Octavo"),
+("Noveno");
+select * from semestres;
+
+DROP TABLE IF EXISTS cursos;
+CREATE TABLE cursos (
+	id_curso INT  NOT NULL AUTO_INCREMENT,
+    nombre_curso VARCHAR (50) NOT NULL,
+    PRIMARY KEY (id_curso)
+);
+INSERT INTO cursos (nombre_curso)VALUES
+("Escolarizado"),
+("En linea"),
+("Impulso"),
+("Maestria")
+;
+SELECT * FROM cursos;
+DROP TABLE IF EXISTS Alumnos;
+CREATE TABLE Alumnos(
+    id_alumno INT (10) AUTO_INCREMENT NOT NULL,
+    nombres VARCHAR (40) NOT NULL ,
+    apellidos VARCHAR (50) NOT NULL,
+    fecha_nac DATE NOT NULL,
+    carrera VARCHAR (30) NOT NULL ,
+    semestre INT NOT NULL,
+    num_materias INT (2) NOT NULL,
+    tipo_curso INT NOT NULL,
+    colegiatura FLOAT NOT NULL,
+    estado VARCHAR (40) NOT NULL DEFAULT "Activo",
+    PRIMARY KEY (id_Alumno),
+    FOREIGN KEY (semestre) REFERENCES semestres(id_semestre),
+    FOREIGN KEY (tipo_curso) REFERENCES cursos(id_curso)
+    
+);
+
+DROP TABLE IF EXISTS Materias;
+CREATE TABLE Materias (
+ 	id_materia INT (10) NOT NULL AUTO_INCREMENT,
+    nombre_materia VARCHAR (100) NOT NULL,
+    num_creditos INT (2) NOT NULL,
+    rama VARCHAR (30) NOT NULL,
+    costo_materia INT (6) NOT NULL,
+    PRIMARY KEY (id_materia)
+);
+INSERT INTO Materias(nombre_materia, num_creditos, rama, costo_materia)VALUES
+("Matematicas Discretas",40,"Ingenieria",8300),
+("Matematicas Discretas II",40,"Ingenieria",8300),
+("Matematicas Discretas III",40,"Ingenieria",8300),
+("Seminario de Ejercicios de Programacion",25,"Ingenieria",5300),
+("Lengua Extranjera I",20,"Tronco Comun",3000),
+("Lengua Extranjera II",20,"Tronco Comun",3000),
+("Lengua Extranjera III",20,"Tronco Comun",3000),
+("Lengua Extranjera IV",20,"Tronco Comun",3000),
+("Lengua Extranjera V",20,"Tronco Comun",3000),
+("Validacion de Metodos",30,"Ingeneria",8300),
+("Histologia",40,"Ciencias Salud",3000),
+("Introduccion a la Anatomia Humana",40,"Ciencias Salud",6000),
+("Mercados financieros",40,"Economico-Administrativas",6000),
+("Estadistica en la economia",30,"Economico-Administrativas",7600)
+;
+SELECT * FROM materias;
+DROP TABLE IF EXISTS Profesores;
+CREATE TABLE Profesores(
+    id_profesor INT (10) AUTO_INCREMENT NOT NULL,
+    nombre VARCHAR (40) NOT NULL ,
+    segundo_nombre VARCHAR (40),
+    fecha_nac DATE NOT NULL,
+    area VARCHAR (30) NOT NULL ,
+    PRIMARY KEY (id_profesor)
+);
+
+DROP TABLE IF EXISTS asignacion_carga;
+CREATE TABLE asignacion_carga(
+    id_alumno INT NOT NULL,
+    id_materia INT NOT NULL,
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno),
+    FOREIGN KEY (id_materia)REFERENCES materias(id_materia)
+);
+
+DROP TABLE IF EXISTS cuentas_por_cobrar;
+CREATE TABLE cuentas_por_cobrar(
+	id_alumno INT (10 )NOT NULL,
+    semestre INT NOT NULL,
+    total_pago NUMERIC NOT NULL,
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno),
+    FOREIGN KEY (semestre) REFERENCES semestres (id_semestre)
+);
+
+/*------------------------------------------------------------
+-----------------------CREACION DE TRIGGERS Y PROCEDURES---------------------*/
+DELIMITER $$
+DROP PROCEDURE IF EXISTS AgregarAlumno$$
+CREATE PROCEDURE AgregarAlumno (IN pnombres  VARCHAR (40), IN papellidos VARCHAR (50), IN pfecha_nac DATE, IN pcarrera VARCHAR (30), IN psemestre VARCHAR (40),IN ptipo_curso VARCHAR (30))
+BEGIN 
+INSERT INTO alumnos (nombres, apellidos, fecha_nac, carrera, semestre,  tipo_curso)
+VALUES (pnombres, papellidos, pfecha_nac, pcarrera, psemestre, ptipo_curso);
+END $$	
+DELIMITER ;
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ListarAlumnos$$
+CREATE PROCEDURE ListarAlumnos ()
+BEGIN 
+SELECT * FROM ALUMNOS ; 
+END $$	
+DELIMITER ;
+
+CALL ListarAlumnos();
