@@ -10,7 +10,7 @@ Usuarios
 El sistema ejecutable tiene el .exe
 El dump de la base de datos es el archivo mapsi.sql, se tiene que crear una base de datos llamada mapsi e importalo
 
-La carpeta BaseDeDatos tiene el codigo fuente 
+El rar de BaseDeDatos es el codigo fuente de visual studio, no me permite subirlo normal por el numero de archivos
 
 Incluyo .rar de todo por si las dudas
 
