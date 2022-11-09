@@ -1,0 +1,39 @@
+CREATE DATABASE IF NOT EXISTS `MovieList`;
+USE `Movielist`;
+
+DROP TABLE IF EXISTS `BDPrincipal`;
+CREATE TABLE `BDPrincipal` (
+	IdPeli int NOT null AUTO_INCREMENT,
+    	Nombre varchar(30),
+    	Genero int NOT null,
+    	Director varchar(30),
+    	Año int,
+	imagen varchar(5000),
+	PRIMARY KEY (IdPeli)
+	);
+
+/* INSERT INTO BDPrincipal (Nombre, Genero, Director, Año, imagen) VALUES
+    ('Harakiri', 4, 'Masaki Kobayashi', 1962,'Harakiri.jpg'),
+    ('My Mister', 4, 'Kim Won-suk', 2018,'MyMister.jpg'),
+    ('Ping Pong the Animation', 4, 'Takehiro Kubota, etc...', 2014,'PPTA.jpg'),
+    ('12 Angry Men', 3, 'Sidney Lumet', 1957,'12AM.jpg'),
+    ('Seven Samurai', 5, 'Akira Kurosawa',1954,'7Samurai.jpg'),
+    ('The Shawshank Redemption', 4, 'Frank Darabont', 1994,'TSR.jpg'),
+    ('Spider-Man: Into the Spider-Verse', 5, 'Rodney Rothman, etc...', 2018,'SPITS.jpg'),
+    ('Neon Genesis Evangelion: The End of Evangelion', 10, 'Hideaki Anno', 1996,'NGE.jpg')
+	; */
+
+DROP TABLE IF EXISTS `usuarios`;
+CREATE TABLE usuarios (
+    idUsuario int NOT null AUTO_INCREMENT,
+    usuario varchar(15),
+    contraseña varchar(25),
+    admin boolean,
+    PRIMARY KEY(idusuario)
+	);
+
+
+
+
+
+
