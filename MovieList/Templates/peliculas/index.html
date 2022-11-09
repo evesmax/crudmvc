@@ -1,0 +1,41 @@
+
+{% include 'header.html' %}
+
+    <div id="menu-agregar"></div>
+    <table class="table table-light">
+        <thead class="thead-light">
+            <tr>
+                <th>Id</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Genero</th>
+                <th>Director</th>
+                <th>Año</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pelicula in peliculas %}
+            <tr>
+                <td>{{pelicula[0]}}</td>
+
+                <td>
+                <img class="img-thumbnail" width="100" src="uploads/{{pelicula[5]}}" alt=""></img>
+                    
+                </td>
+
+                <td>{{pelicula[1]}}</td>
+                <td>{{pelicula[2]}}</td>
+                <td>{{pelicula[3]}}</td>
+                <td>{{pelicula[4]}}</td>
+                <td>
+                    <a href="/edit/{{pelicula[0]}}">Editar</a> | 
+                    <a href="/destroy/{{pelicula[0]}}">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+
+    {% include 'footer.html' %}

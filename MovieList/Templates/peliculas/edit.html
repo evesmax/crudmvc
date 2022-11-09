@@ -1,0 +1,42 @@
+{% include 'header.html' %}
+
+Formulario para Editar
+
+{% for pelicula in peliculas %}
+
+<form method="post" action="/update" enctype="multipart/form-data">
+    
+    Id:
+    <input type="text" value="{{pelicula[0] }}" name="txtID" id="txtID">
+    <br>
+
+    Nombre:
+    <input type="text" value="{{pelicula[1] }}" name="txtNombre" id="txtNombre">
+    <br>
+
+    Genero:
+    <input type="text"  value="{{pelicula[2] }}" name="txtGenero" id="txtGenero">
+    <br>
+
+    Director:
+    <input type="text" value="{{pelicula[3] }}" name="txtDirector" id="txtDirector">
+    <br>
+
+    Año:
+    <input type="text" value="{{pelicula[4] }}" name="txtAño" id="txtAño">
+    <br>
+
+    Imagen:
+    <br>
+    <img class="img-thumbnail" width="300" src="{{ url_for('uploads', nombreImagen = pelicula[5])  }}" alt="">
+    <br>
+    <input type="file" name="txtImagen" id="txtImagen">
+    <br>
+    <br>
+    <input type="submit" value="Editar">
+
+</form>
+{% endfor %}
+
+
+{% include 'footer.html' %}
