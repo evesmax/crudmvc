@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-11-2022 a las 00:33:09
+-- Tiempo de generación: 11-11-2022 a las 17:50:56
 -- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -25,17 +25,40 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCliente` (IN `nombre` VARCHAR(30), `ap` VARCHAR(30), `celular` VARCHAR(13))   BEGIN
+	INSERT INTO `cliente`(`nombres`, `apellido`, `telefono`) VALUES (nombre,ap,celular);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarUsuario` (IN `us` VARCHAR(20), `cont` VARCHAR(30), `nom` VARCHAR(30), `ap` VARCHAR(30), `tel` VARCHAR(13), `niv` INT(1))   BEGIN
 	INSERT INTO `usuarios`(`usuario`, `contrasena`, `nombres`, `apellido`, `telefono`, `nivel`) 		VALUES (us,cont,nom,ap,tel,niv);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarCliente` (IN `id` INT(10))   BEGIN
+	UPDATE cliente SET estatus = 2 WHERE idCliente = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarUsuario` (IN `id` INT(10))   BEGIN
 	UPDATE usuarios SET nivel = 3 WHERE idUs = id;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarCliente` (IN `id` INT(10), `nombre` VARCHAR(30), `ap` VARCHAR(30), `celular` VARCHAR(13))   BEGIN
+	UPDATE `cliente` SET `nombres`= nombre,`apellido`= ap ,`telefono`= celular WHERE idCliente = id;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarUsuario` (IN `id` INT(10), `us` VARCHAR(20), `cont` VARCHAR(30), `nom` VARCHAR(30), `ap` VARCHAR(30), `tel` VARCHAR(13), `niv` INT(1))   BEGIN
     UPDATE usuarios SET usuario = us, contrasena = cont, nombres = nom, apellido = ap, telefono = tel, nivel = niv 
     WHERE idUs = id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verCliente` (IN `id` INT(11))   BEGIN
+	IF(id<=0) THEN
+    	SELECT `idCliente` AS 'ID', `nombres` AS 'Nombres', `apellido` AS 'Apellidos', `telefono` AS 'Telefono'
+From cliente
+        WHERE estatus = 1;
+    ELSE
+    	SELECT `idCliente` AS 'ID', `nombres` AS 'Nombres', `apellido` AS 'Apellidos', `telefono` AS 'Telefono' 
+From cliente WHERE estatus = 1 AND idCliente = id;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verUsuario` (IN `id` INT(10))   BEGIN
@@ -123,8 +146,37 @@ CREATE TABLE `cliente` (
   `idCliente` int(10) UNSIGNED NOT NULL,
   `nombres` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
   `apellido` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `telefono` varchar(13) COLLATE utf8_spanish_ci NOT NULL
+  `telefono` varchar(13) COLLATE utf8_spanish_ci NOT NULL,
+  `estatus` int(10) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`idCliente`, `nombres`, `apellido`, `telefono`, `estatus`) VALUES
+(1, 'Monkey', 'D. Luffy', '10000000', 1),
+(2, 'Gutsu', '-', '666', 1),
+(3, 'a', 'b', '123', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estatus_general`
+--
+
+CREATE TABLE `estatus_general` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `estatus` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `estatus_general`
+--
+
+INSERT INTO `estatus_general` (`id`, `estatus`) VALUES
+(1, 'activo'),
+(2, 'inactivo');
 
 -- --------------------------------------------------------
 
@@ -137,7 +189,8 @@ CREATE TABLE `inventario` (
   `idProv` int(10) UNSIGNED NOT NULL,
   `existencias` int(3) UNSIGNED NOT NULL DEFAULT 0,
   `compra` float(12,2) NOT NULL,
-  `precio` float(12,2) NOT NULL
+  `precio` float(12,2) NOT NULL,
+  `estatus` int(10) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -183,7 +236,8 @@ CREATE TABLE `proveedor` (
   `telefono` varchar(13) COLLATE utf8_spanish_ci NOT NULL,
   `dirección` varchar(50) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'externo',
   `municipio` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'externo',
-  `estado` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'externo'
+  `estado` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'externo',
+  `estatus` int(10) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -248,14 +302,22 @@ ALTER TABLE `bitacorausuarios`
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`idCliente`);
+  ADD PRIMARY KEY (`idCliente`),
+  ADD KEY `estatus_cliente` (`estatus`);
+
+--
+-- Indices de la tabla `estatus_general`
+--
+ALTER TABLE `estatus_general`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `inventario`
 --
 ALTER TABLE `inventario`
   ADD PRIMARY KEY (`idProd`,`idProv`),
-  ADD KEY `proveedor_inventario` (`idProv`);
+  ADD KEY `proveedor_inventario` (`idProv`),
+  ADD KEY `estatus_inventario` (`estatus`);
 
 --
 -- Indices de la tabla `nvusuarios`
@@ -273,7 +335,8 @@ ALTER TABLE `productos`
 -- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  ADD PRIMARY KEY (`idProv`);
+  ADD PRIMARY KEY (`idProv`),
+  ADD KEY `estatus_proveedor` (`estatus`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -296,7 +359,13 @@ ALTER TABLE `bitacorausuarios`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `estatus_general`
+--
+ALTER TABLE `estatus_general`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -328,11 +397,24 @@ ALTER TABLE `bitacorausuarios`
   ADD CONSTRAINT `usuario_modificado` FOREIGN KEY (`idCuenta`) REFERENCES `usuarios` (`idUs`);
 
 --
+-- Filtros para la tabla `cliente`
+--
+ALTER TABLE `cliente`
+  ADD CONSTRAINT `estatus_cliente` FOREIGN KEY (`estatus`) REFERENCES `estatus_general` (`id`);
+
+--
 -- Filtros para la tabla `inventario`
 --
 ALTER TABLE `inventario`
+  ADD CONSTRAINT `estatus_inventario` FOREIGN KEY (`estatus`) REFERENCES `estatus_general` (`id`),
   ADD CONSTRAINT `producto_inventario` FOREIGN KEY (`idProd`) REFERENCES `productos` (`idProd`),
   ADD CONSTRAINT `proveedor_inventario` FOREIGN KEY (`idProv`) REFERENCES `proveedor` (`idProv`);
+
+--
+-- Filtros para la tabla `proveedor`
+--
+ALTER TABLE `proveedor`
+  ADD CONSTRAINT `estatus_proveedor` FOREIGN KEY (`estatus`) REFERENCES `estatus_general` (`id`);
 
 --
 -- Filtros para la tabla `usuarios`
