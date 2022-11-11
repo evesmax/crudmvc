@@ -1,0 +1,8 @@
+CALL agregarCliente('Monkey', 'D. Luffy', '10000000');
+CALL agregarCliente('Guts', '-', '666');
+CALL verCliente(0);
+CALL modificarCliente(2,'Gutsu','-','666');
+CALL verCliente(2);
+CALL agregarCliente('a', 'b', '123');
+CALL eliminarCliente(3);
+CALL verCliente(0);
