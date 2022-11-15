@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-11-2022 a las 17:50:56
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.29
+-- Tiempo de generación: 15-11-2022 a las 19:43:21
+-- Versión del servidor: 10.4.25-MariaDB
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,6 +29,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCliente` (IN `nombre` VARCHA
 	INSERT INTO `cliente`(`nombres`, `apellido`, `telefono`) VALUES (nombre,ap,celular);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarProv` (IN `nom` VARCHAR(30), `tel` VARCHAR(30), `dir` VARCHAR(30), `mun` VARCHAR(30), `est` VARCHAR(30))   BEGIN
+	INSERT INTO `proveedor`(`nombres`, `telefono`, `dirección`, `municipio`, `estado`) VALUES (nom,tel,dir,mun,est);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarUsuario` (IN `us` VARCHAR(20), `cont` VARCHAR(30), `nom` VARCHAR(30), `ap` VARCHAR(30), `tel` VARCHAR(13), `niv` INT(1))   BEGIN
 	INSERT INTO `usuarios`(`usuario`, `contrasena`, `nombres`, `apellido`, `telefono`, `nivel`) 		VALUES (us,cont,nom,ap,tel,niv);
 END$$
@@ -37,12 +41,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarCliente` (IN `id` INT(10)) 
 	UPDATE cliente SET estatus = 2 WHERE idCliente = id;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarProv` (IN `id` INT(10))   BEGIN
+	UPDATE `proveedor` SET estatus = 2 WHERE idProv = id;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarUsuario` (IN `id` INT(10))   BEGIN
 	UPDATE usuarios SET nivel = 3 WHERE idUs = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarCliente` (IN `id` INT(10), `nombre` VARCHAR(30), `ap` VARCHAR(30), `celular` VARCHAR(13))   BEGIN
 	UPDATE `cliente` SET `nombres`= nombre,`apellido`= ap ,`telefono`= celular WHERE idCliente = id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarProv` (IN `id` INT(10), `nom` VARCHAR(30), `tel` VARCHAR(30), `dir` VARCHAR(30), `mun` VARCHAR(30), `est` VARCHAR(30))   BEGIN
+	UPDATE `proveedor` SET `nombres`=nom,`telefono`=tel,`dirección`=dir,`municipio`=mun,`estado`=est WHERE idProv = id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarUsuario` (IN `id` INT(10), `us` VARCHAR(20), `cont` VARCHAR(30), `nom` VARCHAR(30), `ap` VARCHAR(30), `tel` VARCHAR(13), `niv` INT(1))   BEGIN
@@ -58,6 +70,14 @@ From cliente
     ELSE
     	SELECT `idCliente` AS 'ID', `nombres` AS 'Nombres', `apellido` AS 'Apellidos', `telefono` AS 'Telefono' 
 From cliente WHERE estatus = 1 AND idCliente = id;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verProv` (IN `id` INT(10))   BEGIN
+	IF(id<=0) THEN
+    	SELECT `idProv` AS 'ID', `nombres` AS 'Nombre', `telefono` AS 'Telefono', `dirección` AS 'Dirección', `municipio` AS 'Municipio', `estado` AS 'Estado' FROM `proveedor` WHERE estatus = 1;
+    ELSE
+    	SELECT `idProv` AS 'ID', `nombres` AS 'Nombre', `telefono` AS 'Telefono', `dirección` AS 'Dirección', `municipio` AS 'Municipio', `estado` AS 'Estado' FROM `proveedor` WHERE estatus = 1 AND idProv = id;
     END IF;
 END$$
 
@@ -187,6 +207,7 @@ INSERT INTO `estatus_general` (`id`, `estatus`) VALUES
 CREATE TABLE `inventario` (
   `idProd` int(10) UNSIGNED NOT NULL,
   `idProv` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `existencias` int(3) UNSIGNED NOT NULL DEFAULT 0,
   `compra` float(12,2) NOT NULL,
   `precio` float(12,2) NOT NULL,
@@ -216,17 +237,6 @@ INSERT INTO `nvusuarios` (`nivel`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `productos`
---
-
-CREATE TABLE `productos` (
-  `idProd` int(10) UNSIGNED NOT NULL,
-  `desc` varchar(25) COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `proveedor`
 --
 
@@ -239,6 +249,15 @@ CREATE TABLE `proveedor` (
   `estado` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'externo',
   `estatus` int(10) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`idProv`, `nombres`, `telefono`, `dirección`, `municipio`, `estado`, `estatus`) VALUES
+(1, 'Shichibukai', '331145221', 'Nula', 'Grand Line', 'One Piece', 1),
+(2, 'Yunko', '987321654', 'Merry', 'Grand Lines', 'Skypea', 1),
+(3, 'aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas', 2);
 
 -- --------------------------------------------------------
 
@@ -326,12 +345,6 @@ ALTER TABLE `nvusuarios`
   ADD PRIMARY KEY (`nivel`);
 
 --
--- Indices de la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`idProd`);
-
---
 -- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
@@ -368,16 +381,10 @@ ALTER TABLE `estatus_general`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `productos`
---
-ALTER TABLE `productos`
-  MODIFY `idProd` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
