@@ -1,3 +1,4 @@
+//Agregar Usuario
 CALL agregarCliente('Monkey', 'D. Luffy', '10000000');
 CALL agregarCliente('Guts', '-', '666');
 CALL verCliente(0);
@@ -6,3 +7,14 @@ CALL verCliente(2);
 CALL agregarCliente('a', 'b', '123');
 CALL eliminarCliente(3);
 CALL verCliente(0);
+
+//Agregar Proveedores
+CALL agregarProv('Shichibukai', '331145221', 'Nula', 'Grand Line', 'One Piece');
+CALL agregarProv('Yunko', '123456789', 'Sunny', 'Grand Line', 'Alabasta');
+CALL verProv(0);
+CALL modificarProv(2,'Yunko', '987321654', 'Merry', 'Grand Lines', 'Skypea');
+CALL verProv(2);
+CALL agregarProv('aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas');
+CALL verProv(0);
+CALL eliminarProv(3);
+CALL verProv(0);
