@@ -18,3 +18,12 @@ CALL agregarProv('aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas');
 CALL verProv(0);
 CALL eliminarProv(3);
 CALL verProv(0);
+
+SELECT `idProd` as 'ID',
+		proveedor.nombres AS 'Proveedor', 
+        `nombre` as 'Producto', 
+        `existencias`, 
+        `compra`, 
+        `precio`, 
+        `estatus` 
+FROM `inventario` WHERE 1
