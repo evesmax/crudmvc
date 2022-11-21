@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2022 a las 19:43:21
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 8.1.10
+-- Tiempo de generación: 21-11-2022 a las 20:05:46
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -176,8 +176,9 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`idCliente`, `nombres`, `apellido`, `telefono`, `estatus`) VALUES
 (1, 'Monkey', 'D. Luffy', '10000000', 1),
-(2, 'Gutsu', '-', '666', 1),
-(3, 'a', 'b', '123', 2);
+(2, 'Gutsu', 'Kasca', '666', 1),
+(3, 'a', 'b', '123', 2),
+(4, 'wqF', 'gsdgf', 'gsdgf', 2);
 
 -- --------------------------------------------------------
 
@@ -257,7 +258,8 @@ CREATE TABLE `proveedor` (
 INSERT INTO `proveedor` (`idProv`, `nombres`, `telefono`, `dirección`, `municipio`, `estado`, `estatus`) VALUES
 (1, 'Shichibukai', '331145221', 'Nula', 'Grand Line', 'One Piece', 1),
 (2, 'Yunko', '987321654', 'Merry', 'Grand Lines', 'Skypea', 1),
-(3, 'aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas', 2);
+(3, 'aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas', 2),
+(4, 'a', '12591591', 'b', 'c', 'd', 2);
 
 -- --------------------------------------------------------
 
@@ -372,7 +374,7 @@ ALTER TABLE `bitacorausuarios`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `estatus_general`
@@ -384,7 +386,7 @@ ALTER TABLE `estatus_general`
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -414,7 +416,6 @@ ALTER TABLE `cliente`
 --
 ALTER TABLE `inventario`
   ADD CONSTRAINT `estatus_inventario` FOREIGN KEY (`estatus`) REFERENCES `estatus_general` (`id`),
-  ADD CONSTRAINT `producto_inventario` FOREIGN KEY (`idProd`) REFERENCES `productos` (`idProd`),
   ADD CONSTRAINT `proveedor_inventario` FOREIGN KEY (`idProv`) REFERENCES `proveedor` (`idProv`);
 
 --
