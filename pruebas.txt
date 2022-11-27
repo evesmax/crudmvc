@@ -27,3 +27,15 @@ SELECT `idProd` as 'ID',
         `precio`, 
         `estatus` 
 FROM `inventario` WHERE 1
+
+CALL agregarItem (1,"Prueba",10,15.3,20.6);
+CALL consultarItems ();
+CALL agregarItem (1,"Queso",11,11.35,15.8);
+CALL modificarItem (2, 1,"amen",3,9.6, 10);
+CALL agregarItem (2,"Queso",11,11.35,15.8);
+CALL consultarItems ();
+CALL eliminarItem (2,1);
+CALL consultarItems ();
+CALL consultarItemsProveedor (1);
+CALL consultarItemsProveedor (2);
+CALL consultarItemsNombre ("Prueba");
