@@ -28,6 +28,11 @@ SELECT `idProd` as 'ID',
         `estatus` 
 FROM `inventario` WHERE 1
 
+DROP PROCEDURE consultarItems;
+DROP PROCEDURE consultarItemsProveedor;
+DROP PROCEDURE consultarItemsId;
+DROP PROCEDURE consultarItemsNombre;
+
 CALL agregarItem (1,"Prueba",10,15.3,20.6);
 CALL consultarItems ();
 CALL agregarItem (1,"Queso",11,11.35,15.8);
