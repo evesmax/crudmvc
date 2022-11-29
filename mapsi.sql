@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-11-2022 a las 20:05:46
+-- Tiempo de generación: 29-11-2022 a las 05:46:50
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -25,8 +25,20 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarExistencias` (IN `idPrd` INT(11), IN `idPrv` INT(11), IN `exis` INT(4))   BEGIN
+	UPDATE `inventario` SET `existencias`= existencias - exis WHERE `idProd`=idPrd;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarCliente` (IN `nombre` VARCHAR(30), `ap` VARCHAR(30), `celular` VARCHAR(13))   BEGIN
 	INSERT INTO `cliente`(`nombres`, `apellido`, `telefono`) VALUES (nombre,ap,celular);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarElemento` (IN `idV` INT(11), `idPrd` INT(11), `exis` INT(4), `com` FLOAT(12,2))   BEGIN
+	INSERT INTO `elementos_venta`(`idVenta`, `idProd`, `cantidad`, `subtotal`) VALUES (idV,idPrd,exis,com);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarItem` (`idPrv` INT(11), `nom` VARCHAR(50), `exis` INT(4), `com` FLOAT(12,2), `prc` FLOAT(12,2))   BEGIN
+	INSERT INTO `inventario`(`idProv`, `nombre`, `existencias`, `compra`, `precio`) VALUES (idPrv,nom,exis,com,prc);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarProv` (IN `nom` VARCHAR(30), `tel` VARCHAR(30), `dir` VARCHAR(30), `mun` VARCHAR(30), `est` VARCHAR(30))   BEGIN
@@ -37,8 +49,40 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarUsuario` (IN `us` VARCHAR(20
 	INSERT INTO `usuarios`(`usuario`, `contrasena`, `nombres`, `apellido`, `telefono`, `nivel`) 		VALUES (us,cont,nom,ap,tel,niv);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarVenta` (IN `idU` INT(11), `idC` INT(11), `com` FLOAT(12,2))   BEGIN
+	INSERT INTO `ventas`(`idUs`, `idCliente`, `total`) VALUES (idU,idC,com);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarItems` ()   BEGIN
+	SELECT `idProd` as 'Producto', proveedor.nombres as 'Proveedor', `nombre` as 'Nombre', `existencias` as 'Existencias', `compra` as 'Compra', `precio` as 'Precio' FROM `inventario`
+    INNER JOIN proveedor on proveedor.idProv = inventario.idProv
+    WHERE inventario.estatus=1 ORDER BY idProd ASC;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarItemsId` (IN `idPrd` INT(11))   BEGIN
+	SELECT `idProd` as 'Producto', proveedor.nombres as 'Proveedor', `nombre` as 'Nombre', `existencias` as 'Existencias', `compra` as 'Compra', `precio` as 'Precio' FROM `inventario`
+    INNER JOIN proveedor on proveedor.idProv = inventario.idProv
+    WHERE `idProd`=idPrd AND inventario.estatus=1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarItemsNombre` (IN `nom` VARCHAR(50))   BEGIN
+	SELECT `idProd` as 'Producto', proveedor.idProv as 'Proveedor', `nombre` as 'Nombre', `existencias` as 'Existencias', `compra` as 'Compra', `precio` as 'Precio' FROM `inventario`
+    INNER JOIN proveedor on proveedor.idProv = inventario.idProv
+    WHERE nombre LIKE nom AND inventario.estatus=1 ORDER BY idProd ASC;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarItemsProveedor` (IN `idPrv` INT(11))   BEGIN
+	SELECT `idProd` as 'Producto', proveedor.idProv as 'Proveedor', `nombre` as 'Nombre', `existencias` as 'Existencias', `compra` as 'Compra', `precio` as 'Precio' FROM `inventario`
+    INNER JOIN proveedor on proveedor.idProv = inventario.idProv
+    WHERE inventario.idProv=idPrv AND inventario.estatus=1 ORDER BY idProd ASC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarCliente` (IN `id` INT(10))   BEGIN
 	UPDATE cliente SET estatus = 2 WHERE idCliente = id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarItem` (IN `idPrd` INT(11))   BEGIN
+	UPDATE `inventario` SET estatus=2 WHERE `idProd`=idPrd;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarProv` (IN `id` INT(10))   BEGIN
@@ -49,8 +93,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarUsuario` (IN `id` INT(10)) 
 	UPDATE usuarios SET nivel = 3 WHERE idUs = id;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `idInventario` ()   BEGIN
+	SELECT `idProd`FROM inventario WHERE estatus = 1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `idProveedores` ()   BEGIN
+	SELECT `idProv`, nombres FROM proveedor WHERE estatus = 1 ORDER BY idProd ASC;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarCliente` (IN `id` INT(10), `nombre` VARCHAR(30), `ap` VARCHAR(30), `celular` VARCHAR(13))   BEGIN
 	UPDATE `cliente` SET `nombres`= nombre,`apellido`= ap ,`telefono`= celular WHERE idCliente = id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarItem` (IN `idPrd` INT(11), `nom` VARCHAR(50), `exis` INT(4), `com` FLOAT(12,2), `prc` FLOAT(12,2))   BEGIN
+	UPDATE `inventario` SET `nombre`=nom,`existencias`=exis,`compra`=com,`precio`=prc WHERE `idProd`=idPrd;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `modificarProv` (IN `id` INT(10), `nom` VARCHAR(30), `tel` VARCHAR(30), `dir` VARCHAR(30), `mun` VARCHAR(30), `est` VARCHAR(30))   BEGIN
@@ -95,6 +151,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `verUsuario` (IN `id` INT(10))   BEG
     END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verVentas` ()   BEGIN
+	SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente;
+END$$
+
 --
 -- Funciones
 --
@@ -102,6 +164,12 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `conseguirId` (`cuenta` VARCHAR(30)) 
 	DECLARE ret varchar(30);
   	SET ret = (SELECT idUs FROM usuarios WHERE usuario = cuenta);
     	RETURN ret;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `verifInventario` (`idPrd` INT(11), `idPrv` INT(11)) RETURNS INT(11)  BEGIN
+  DECLARE ret int;
+  	SET ret = (SELECT existencias FROM inventario WHERE `idProd`=idPrd AND `idProv`=idPrv);
+    RETURN ret;
 END$$
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `verifUsuario` (`cuenta` VARCHAR(30), `contr` VARCHAR(30)) RETURNS TINYINT(1)  BEGIN
@@ -183,6 +251,37 @@ INSERT INTO `cliente` (`idCliente`, `nombres`, `apellido`, `telefono`, `estatus`
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `elementos_venta`
+--
+
+CREATE TABLE `elementos_venta` (
+  `idVenta` int(10) UNSIGNED NOT NULL,
+  `idProd` int(10) UNSIGNED NOT NULL,
+  `cantidad` int(10) UNSIGNED NOT NULL,
+  `subtotal` float(14,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `elementos_venta`
+--
+
+INSERT INTO `elementos_venta` (`idVenta`, `idProd`, `cantidad`, `subtotal`) VALUES
+(1, 1, 3, 61.80),
+(1, 3, 1, 15.80);
+
+--
+-- Disparadores `elementos_venta`
+--
+DELIMITER $$
+CREATE TRIGGER `existenciasProductos` AFTER INSERT ON `elementos_venta` FOR EACH ROW BEGIN
+  CALL actualizarExistencias(NEW.idProd,0,NEW.cantidad);
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `estatus_general`
 --
 
@@ -214,6 +313,17 @@ CREATE TABLE `inventario` (
   `precio` float(12,2) NOT NULL,
   `estatus` int(10) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`idProd`, `idProv`, `nombre`, `existencias`, `compra`, `precio`, `estatus`) VALUES
+(1, 1, 'Prueba', 5, 15.30, 20.60, 1),
+(2, 1, 'amen', 3, 9.60, 10.00, 2),
+(3, 2, 'Chess', 10, 12.70, 15.80, 1),
+(4, 1, 'Queso', 19, 10.00, 11.00, 1),
+(5, 2, 'q', 4, 2.00, 3.00, 2);
 
 -- --------------------------------------------------------
 
@@ -307,6 +417,26 @@ END
 $$
 DELIMITER ;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `idVenta` int(10) UNSIGNED NOT NULL,
+  `idUs` int(10) UNSIGNED NOT NULL,
+  `idCliente` int(10) UNSIGNED NOT NULL,
+  `total` float(14,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`idVenta`, `idUs`, `idCliente`, `total`) VALUES
+(1, 1, 1, 77.60);
+
 --
 -- Índices para tablas volcadas
 --
@@ -325,6 +455,13 @@ ALTER TABLE `bitacorausuarios`
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`idCliente`),
   ADD KEY `estatus_cliente` (`estatus`);
+
+--
+-- Indices de la tabla `elementos_venta`
+--
+ALTER TABLE `elementos_venta`
+  ADD PRIMARY KEY (`idVenta`,`idProd`),
+  ADD KEY `producto` (`idProd`);
 
 --
 -- Indices de la tabla `estatus_general`
@@ -361,6 +498,14 @@ ALTER TABLE `usuarios`
   ADD KEY `Nivel_de_Usuario` (`nivel`);
 
 --
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`idVenta`),
+  ADD KEY `venta_usuario` (`idUs`),
+  ADD KEY `venta_cliente` (`idCliente`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -383,6 +528,12 @@ ALTER TABLE `estatus_general`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  MODIFY `idProd` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
@@ -393,6 +544,12 @@ ALTER TABLE `proveedor`
 --
 ALTER TABLE `usuarios`
   MODIFY `idUs` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `idVenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -412,6 +569,13 @@ ALTER TABLE `cliente`
   ADD CONSTRAINT `estatus_cliente` FOREIGN KEY (`estatus`) REFERENCES `estatus_general` (`id`);
 
 --
+-- Filtros para la tabla `elementos_venta`
+--
+ALTER TABLE `elementos_venta`
+  ADD CONSTRAINT `elementos` FOREIGN KEY (`idVenta`) REFERENCES `ventas` (`idVenta`),
+  ADD CONSTRAINT `producto` FOREIGN KEY (`idProd`) REFERENCES `inventario` (`idProd`);
+
+--
 -- Filtros para la tabla `inventario`
 --
 ALTER TABLE `inventario`
@@ -429,6 +593,13 @@ ALTER TABLE `proveedor`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `Nivel_de_Usuario` FOREIGN KEY (`nivel`) REFERENCES `nvusuarios` (`nivel`);
+
+--
+-- Filtros para la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD CONSTRAINT `venta_cliente` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
+  ADD CONSTRAINT `venta_usuario` FOREIGN KEY (`idUs`) REFERENCES `usuarios` (`idUs`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
