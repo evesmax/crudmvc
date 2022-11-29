@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-11-2022 a las 05:46:50
+-- Tiempo de generación: 29-11-2022 a las 16:24:11
 -- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Versión de PHP: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -75,6 +75,35 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarItemsProveedor` (IN `idPrv
 	SELECT `idProd` as 'Producto', proveedor.idProv as 'Proveedor', `nombre` as 'Nombre', `existencias` as 'Existencias', `compra` as 'Compra', `precio` as 'Precio' FROM `inventario`
     INNER JOIN proveedor on proveedor.idProv = inventario.idProv
     WHERE inventario.idProv=idPrv AND inventario.estatus=1 ORDER BY idProd ASC;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `consultarVentaPor` (IN `id` INT(11), IN `modo` INT(1), IN `fecha1` DATE, IN `fecha2` DATE)   BEGIN
+IF modo = 1 THEN
+	SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente
+WHERE `idVenta` = id;
+ELSEIF modo = 2 THEN
+SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente
+WHERE ventas.`idUs` = id;
+ELSEIF modo = 3 THEN
+SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente
+WHERE ventas.`idCliente` = id;
+ELSEIF modo = 4 THEN
+SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente
+WHERE fecha = fecha1;
+ELSEIF modo = 5 THEN
+SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
+INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
+INNER JOIN cliente ON cliente.idCliente = ventas.idCliente
+WHERE fecha BETWEEN fecha1 AND fecha2;
+END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `eliminarCliente` (IN `id` INT(10))   BEGIN
@@ -152,7 +181,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `verUsuario` (IN `id` INT(10))   BEG
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `verVentas` ()   BEGIN
-	SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" FROM `ventas`
+	SELECT `idVenta` as "Venta", usuarios.usuario as "Usuario", cliente.nombres as "Cliente", `total` as "Total" , fecha as "Fecha" FROM `ventas`
 INNER JOIN usuarios ON usuarios.idUs = ventas.idUs
 INNER JOIN cliente ON cliente.idCliente = ventas.idCliente;
 END$$
@@ -222,7 +251,8 @@ INSERT INTO `bitacorausuarios` (`idCambio`, `idUsuario`, `idCuenta`, `Cambio`) V
 (22, 1, 1, 'modificarUsuario(1,admin,root,Cesar,Nuño,3310689408,0)'),
 (23, 1, 1, 'modificarUsuario(1,administrador,root,Cesar,Nuño,3310689408,0)'),
 (24, 1, 2, 'modificarUsuario(2,venta,ventas,Prueba,Prueba,3300112233,1)'),
-(25, 1, 4, 'agregarUsuario(4,Borrar,Borrar,Borrado,Erased,000000000,1)');
+(25, 1, 4, 'agregarUsuario(4,Borrar,Borrar,Borrado,Erased,000000000,1)'),
+(26, NULL, 4, 'modificarUsuario(4,Borrar,Borrar,Borrado,Erased,000000000,3)');
 
 -- --------------------------------------------------------
 
@@ -244,9 +274,10 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`idCliente`, `nombres`, `apellido`, `telefono`, `estatus`) VALUES
 (1, 'Monkey', 'D. Luffy', '10000000', 1),
-(2, 'Gutsu', 'Kasca', '666', 1),
+(2, 'Juan', 'Kasca', '33201415', 1),
 (3, 'a', 'b', '123', 2),
-(4, 'wqF', 'gsdgf', 'gsdgf', 2);
+(4, 'wqF', 'gsdgf', 'gsdgf', 2),
+(5, 'Pedro', 'Martinez', 'Martinez', 2);
 
 -- --------------------------------------------------------
 
@@ -267,7 +298,9 @@ CREATE TABLE `elementos_venta` (
 
 INSERT INTO `elementos_venta` (`idVenta`, `idProd`, `cantidad`, `subtotal`) VALUES
 (1, 1, 3, 61.80),
-(1, 3, 1, 15.80);
+(1, 3, 1, 15.80),
+(2, 1, 3, 61.80),
+(2, 6, 10, 30005.00);
 
 --
 -- Disparadores `elementos_venta`
@@ -319,11 +352,12 @@ CREATE TABLE `inventario` (
 --
 
 INSERT INTO `inventario` (`idProd`, `idProv`, `nombre`, `existencias`, `compra`, `precio`, `estatus`) VALUES
-(1, 1, 'Prueba', 5, 15.30, 20.60, 1),
+(1, 1, 'Prueba', 2, 15.30, 20.60, 1),
 (2, 1, 'amen', 3, 9.60, 10.00, 2),
-(3, 2, 'Chess', 10, 12.70, 15.80, 1),
+(3, 2, 'Memoria Ram', 20, 500.00, 750.00, 2),
 (4, 1, 'Queso', 19, 10.00, 11.00, 1),
-(5, 2, 'q', 4, 2.00, 3.00, 2);
+(5, 2, 'q', 4, 2.00, 3.00, 2),
+(6, 5, 'Tarjeta Grafica', 5, 1500.75, 3000.50, 1);
 
 -- --------------------------------------------------------
 
@@ -366,10 +400,11 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`idProv`, `nombres`, `telefono`, `dirección`, `municipio`, `estado`, `estatus`) VALUES
-(1, 'Shichibukai', '331145221', 'Nula', 'Grand Line', 'One Piece', 1),
-(2, 'Yunko', '987321654', 'Merry', 'Grand Lines', 'Skypea', 1),
+(1, 'DELL', '331145221', 'Nose', 'Grand Line', 'One Piece', 1),
+(2, 'Yunko', '987321654', 'Merry', 'Grand Lines', 'Skypea', 2),
 (3, 'aaaaaa', '3123213213', 'Cremas', 'asdsadasd', 'adadsaasas', 2),
-(4, 'a', '12591591', 'b', 'c', 'd', 2);
+(4, 'a', '12591591', 'b', 'c', 'd', 2),
+(5, 'HP', '33105897', 'Hipico', 'Zapopan', 'Jalisco', 1);
 
 -- --------------------------------------------------------
 
@@ -395,7 +430,7 @@ INSERT INTO `usuarios` (`idUs`, `usuario`, `contrasena`, `nombres`, `apellido`, 
 (1, 'administrador', 'root', 'Cesar', 'Nuño', '3310689408', 0),
 (2, 'venta', 'ventas', 'Prueba', 'Prueba', '3300112233', 1),
 (3, 'Prueba', 'contrasena', 'Juan', 'Perez', '3310689452', 3),
-(4, 'Borrar', 'Borrar', 'Borrado', 'Erased', '000000000', 1);
+(4, 'Borrar', 'Borrar', 'Borrado', 'Erased', '000000000', 3);
 
 --
 -- Disparadores `usuarios`
@@ -427,15 +462,17 @@ CREATE TABLE `ventas` (
   `idVenta` int(10) UNSIGNED NOT NULL,
   `idUs` int(10) UNSIGNED NOT NULL,
   `idCliente` int(10) UNSIGNED NOT NULL,
-  `total` float(14,2) DEFAULT NULL
+  `total` float(14,2) DEFAULT NULL,
+  `fecha` date NOT NULL DEFAULT curdate()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `ventas`
 --
 
-INSERT INTO `ventas` (`idVenta`, `idUs`, `idCliente`, `total`) VALUES
-(1, 1, 1, 77.60);
+INSERT INTO `ventas` (`idVenta`, `idUs`, `idCliente`, `total`, `fecha`) VALUES
+(1, 1, 1, 77.60, '2022-11-29'),
+(2, 1, 2, 30066.80, '2022-11-29');
 
 --
 -- Índices para tablas volcadas
@@ -513,13 +550,13 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `bitacorausuarios`
 --
 ALTER TABLE `bitacorausuarios`
-  MODIFY `idCambio` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idCambio` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idCliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `estatus_general`
@@ -531,13 +568,13 @@ ALTER TABLE `estatus_general`
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `idProd` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idProd` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idProv` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -549,7 +586,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `idVenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idVenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
