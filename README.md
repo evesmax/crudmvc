@@ -5,4 +5,7 @@ CRUD MVC con PHP, Bootstrap y MySQL
 
 1.1 ¿Qué es un CRUD?
 
-En computación CRUD es el acrónimo de Crear, Leer, Actualizar y Borrar (del original en inglés: Create, Read, Update and Delete). Se usa para referirse a las funciones básicas en bases de datos o la capa de persistencia en un software.  En este caso para el desarrollo Web.
+En computación CRUD es el acrónimo de Crear, Leer, Actualizar y Borrar (del original en inglés: Create, Read, Update and Delete). Se usa para referirse a las funciones básicas en bases de datos o la capa de persistencia en un software.  En este caso para el desarrollo Webi
+
+Actualizare este archivo con cambio para ejemplificar los cambios en Git
+.
