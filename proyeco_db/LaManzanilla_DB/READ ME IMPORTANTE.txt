@@ -1,6 +1,0 @@
-Hola profe, la base de datos es la que tiene el nombre de "lamanzanilla_db.sql". Ignore el script de sql 
-que esta dentro del visual studio. Por el momento solo funciona la parte de productos, la pagina inicial 
-es llamada "inicioProductos.php". De ahí se deriban las demás, aun falta modificar diseño y eso pero el 
-funcionamiento de la tabla de productos ya esta, ya elimina, modifica, agrega y esta la consulta de la tabla
-en la pagina principal.
-
