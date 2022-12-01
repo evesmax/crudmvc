@@ -58,24 +58,24 @@ if (isset($_POST['submit'])) {
       <form method="post">
         <div class="form-group">
           <label for="nombre">Nombre</label>
-          <input type="text" name="nombre" id="nombre" class="form-control">
+          <input type="text" name="nombre" id="nombre" class="form-control" required>
         </div>
         <div class="form-group">
           <label for="apellidos">Apellidos</label>
-          <input type="text" name="apellidos" id="apellidos" class="form-control">
+          <input type="text" name="apellidos" id="apellidos" class="form-control"required>
         </div>
         <div class="form-group">
           <label for="fecha_nac">Fecha de Nacimiento (AAAA-MM-DD)</label>
-          <input type="text" name="fecha_nac" id="fecha_nac" class="form-control">
+          <input type="date" name="fecha_nac" id="fecha_nac" class="form-control"required>
         </div>
         <div class="form-group">
           <label for="carrera">Carrera</label>
-          <input type="text" name="carrera" id="carrera" class="form-control">
+          <input type="text" name="carrera" id="carrera" class="form-control"required>
         </div>
         <div class="form-group">
           <label for="semestre">Semestre</label>
-          <select name = "semestre" id = "semestre"class="form-select" aria-label="Default select example">
-                <option value = "0" selected>Selecciona el Semestre</option>
+          <select name = "semestre" id = "semestre"class="form-select" aria-label="Default select example"required>
+                <option value = "" selected>Selecciona el Semestre</option>
                 <option value="1">Primero</option>
                 <option value="2">Segundo</option>
                 <option value="3">Tercero</option>
@@ -89,8 +89,8 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="form-group">
           <label for="tipo_curso">Tipo de Curso</label>
-          <select name = "tipo_curso" id = "tipo_curso"class="form-select" aria-label="Default select example">
-                <option value = "0" selected>Selecciona el Curso</option>
+          <select name = "tipo_curso" id = "tipo_curso"class="form-select" aria-label="Default select example"required>
+                <option value = "" selected>Selecciona el Curso</option>
                 <option value="1">Escolarizado</option>
                 <option value="2">En linea</option>
                 <option value="3">Impulso</option>
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="form-group">
           <input type="submit" name="submit" class="btn btn-primary" value="Enviar">
-          <a class="btn btn-primary" href="index.php">Volver al inicio</a>
+          <a class="btn btn-primary" href="index_alumnos.php">Volver al inicio</a>
         </div>
       </form>
     </div>
