@@ -1,5 +1,9 @@
 -- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
+DROP DATABASE IF EXISTS skypea;
+CREATE DATABASE skypea;
+use skypea;
+
 -- Host: 34.211.237.34    Database: skypea
 -- ------------------------------------------------------
 -- Server version	5.5.62-0ubuntu0.14.04.1
