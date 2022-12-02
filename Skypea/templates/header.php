@@ -19,6 +19,10 @@
 function confirmar(nombre) {
     return confirm("De verdad quieres eliminar a: "+nombre+"?");
 }
+
+function confirmarDesasignar(materia) {
+    return confirm("De verdad quieres dar de baja: "+materia);
+}
 var nombreActual = '';
 </script>
 </head>

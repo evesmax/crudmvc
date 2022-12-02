@@ -38,12 +38,15 @@ try {
   $conexion = new PDO($dsn, $config['db']['user'], $config['db']['pass'], $config['db']['options']);
     
 
-  $consultaSQL = "SELECT id_alumno,(SELECT nombre_materia from materias where id_materia = asignacion_carga.id_materia) as 'Materia',fecha_asignacion FROM asignacion_carga WHERE id_alumno =" . $id_alumno;
+  $consultaSQL = "SELECT id_alumno,(SELECT nombre_materia from materias where id_materia = asignacion_carga.id_materia) as 'Materia',fecha_asignacion, id_materia FROM asignacion_carga WHERE id_alumno =" . $id_alumno;
 
   $sentencia = $conexion->prepare($consultaSQL);
   $sentencia->execute();
   $listamaterias = $sentencia->fetchAll();
   print_r($listamaterias);
+  $numero_elementos = count($listamaterias);
+  echo "<br>".$numero_elementos."ESTO SON LOS NUMEROS DE ELEMENTOS QUE TIENE ASIGNACION<br>";
+  echo $listamaterias[0]['Materia']."<br>";
  
 
   if (!$listamaterias) {
@@ -89,12 +92,17 @@ if (isset($_POST['submit'])) {
   
     $resultado = [
       'error' => false,
-      'mensaje' => 'La materia' .escapar($listamaterias['Materia']).' ha sido agregada con exito!'
+      'mensaje' => 'La materia ' .escapar($listamaterias['Materia']).' ha sido agregada con exito!'
     ];
     if($asignacion['id_materia'] != 0){
-    $AgregarMateria = "insert into asignacion_carga (id_alumno,id_materia,fecha_asignacion)values(".$_GET['id_alumno'].",".$asignacion['id_materia'].",now());";
+    $AgregarMateria = "SELECT asignarMAteria(".$asignacion['id_materia'].",".$_GET['id_alumno'].");";
+    echo $AgregarMateria;
    $sentenciaAgregar = $conexion->prepare($AgregarMateria);
    $sentenciaAgregar->execute();
+   $page = "http://localhost/Skypea/asignarmaterias.php?id_alumno=".$id_alumno;
+   echo $page;
+   $sec = "0.2";
+   header("Refresh: $sec; url=$page");
 
     }else{
       $resultado['error'] = true;
@@ -133,6 +141,7 @@ if (isset($_POST['submit'])) {
             <th>Alumno</th>
             <th>Materia</th>
             <th>Fecha de Asignacion</th>
+            <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
@@ -143,7 +152,10 @@ if (isset($_POST['submit'])) {
               <tr>
                 <td><?php echo escapar($fila["id_alumno"]); ?></td>
                 <td><?php echo escapar($fila["Materia"]); ?></td>
-                <td><?php echo escapar($fila["fecha_asignacion"]); ?></td>
+                <td><?php echo escapar($fila["fecha_asignacion"]); $b = $fila["Materia"]; ?></td>
+                <td>
+                <a onclick = "return confirmarDesasignar('<?php echo $b;?>')" href="<?= 'desasignarmateria.php?id_alumno=' . escapar($fila["id_alumno"].'&id_materia='.escapar($fila["id_materia"])) ?>"><button><span class="material-symbols-outlined">delete</span></button></a>
+                </td>
               </tr>
               <?php
             }
@@ -181,11 +193,14 @@ if (isset($_POST['submit'])) {
           <select name = "materia" id = "materia"class="form-select" aria-label="Default select example"required>
           <option selected value="0">Selecciona la materia</option>
             <?php
+            
+            /* echo '<script language="javascript">alert("");</script>';*/ 
                       if ($listamateriasSELECT && $sentenciaED1->rowCount() > 0) {
                         foreach ($listamateriasSELECT as $fila) {
-                          ?>
-                          <option value="<?php echo $fila['id_materia'];?>"><?php echo $fila['nombre_materia']?></option>
-                          <?php
+                            ?>
+                            <option value="<?php echo $fila['id_materia'];?>"><?php echo $fila['nombre_materia']?></option>
+                            <?php
+                          
                         }
                       }
             ?>

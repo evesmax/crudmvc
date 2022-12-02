@@ -1,8 +1,10 @@
 <?php
  $id_materia = $_GET['id_materia'];
+ $id_alumno = $_GET['id_alumno'];
 include 'funciones.php';
 
 $config = include 'config.php';
+
 
 $resultado = [
   'error' => false,
@@ -14,12 +16,12 @@ try {
   $conexion = new PDO($dsn, $config['db']['user'], $config['db']['pass'], $config['db']['options']);
     
  
-  $consultaSQL = "CALL eliminarmateria(".$id_materia.");";
+  $consultaSQL = "CALL desasignarmateria(".$id_materia.",".$id_alumno.");";
 
   $sentencia = $conexion->prepare($consultaSQL);
   $sentencia->execute();
 
-  header('Location: /Skypea/index_materias.php');
+  header('Location: /Skypea/asignarmaterias.php?id_alumno='.$id_alumno);
 
 } catch(PDOException $error) {
   $resultado['error'] = true;

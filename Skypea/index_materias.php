@@ -29,7 +29,7 @@ $conexion2 = new PDO($dsn2, $config['db']['user'], $config['db']['pass'], $confi
 //print_r ($alumnos);
 
 if (isset($_POST['apellidoBuscar'])) {
-  $ConsultaBuscarApellido = "SELECT * FROM alumnos WHERE apellidos LIKE '%" . $_POST['apellidoBuscar'] . "%';";
+  $ConsultaBuscarApellido = "SELECT * FROM materias WHERE nombre_materia LIKE '%" . $_POST['apellidoBuscar'] . "%';";
 echo $ConsultaBuscarApellido;
 $SentenciaProcedureListar1 = $conexion->prepare($ConsultaBuscarApellido);
 $SentenciaProcedureListar1->execute();
