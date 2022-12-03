@@ -16,29 +16,10 @@ class SaldosController{
         require_once 'view/footer.php';
     }
 
-    public function Crud(){
-        $prod = new saldo();
-
-        if(isset($_REQUEST['id_saldo'])){
-            $prod = $this->model->Obtener($_REQUEST['id_saldo']);
-        }
-
-        require_once 'view/header.php';
-        require_once 'view/saldos/saldos-editar.php';
-        require_once 'view/footer.php';
-    }
-
-    public function Nuevo(){
-        $prod = new saldo();
-
-        require_once 'view/header.php';
-        require_once 'view/saldos/saldos-nuevo.php';
-        require_once 'view/footer.php';
-    }
     public function Agregar(){
         $prod = new saldo();
 
-        $prod->id_prod = $_REQUEST['id_prod'];
+        $prod->id_saldo = $_REQUEST['id_saldo'];
         $prod->cantidad = $_REQUEST['cantidad'];
     
         $this->model->Sumar($prod);
@@ -48,7 +29,7 @@ class SaldosController{
     public function Quitar(){
         $prod = new saldo();
 
-        $prod->id_prod = $_REQUEST['id_prod'];
+        $prod->id_saldo = $_REQUEST['id_saldo'];
         $prod->cantidad = $_REQUEST['cantidad'];
     
         $this->model->Restar($prod);
@@ -58,6 +39,11 @@ class SaldosController{
     public function Mas(){
         $prod = new saldo();
 
+        if(isset($_REQUEST['id_saldo'])){
+            $prod = $this->model->Obtener($_REQUEST['id_saldo']);
+            $prod->cantidad = "";
+        }
+
         require_once 'view/header.php';
         require_once 'view/saldos/saldos-agregar.php';
         require_once 'view/footer.php';
@@ -65,6 +51,11 @@ class SaldosController{
 
     public function Menos(){
         $prod = new saldo();
+
+        if(isset($_REQUEST['id_saldo'])){
+            $prod = $this->model->Obtener($_REQUEST['id_saldo']);
+            $prod->cantidad = "";
+        }
 
         require_once 'view/header.php';
         require_once 'view/saldos/saldos-quitar.php';

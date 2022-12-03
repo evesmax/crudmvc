@@ -10,6 +10,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th style="width:120px;">id_saldo</th>
             <th style="width:120px;">Bodega</th>
             <th style="width:120px;">Codigo Producto</th>
             <th style="width:120px;">Entradas</th>
@@ -21,6 +22,7 @@
     <tbody>
     <?php foreach($this->model->Listar() as $r): ?>
         <tr>
+            <td><?php echo $r->id_saldo; ?></td>
             <td><?php echo $r->bodega; ?></td>
             <td><?php echo $r->id_prod; ?></td>
             <td><?php echo $r->total_entradas; ?></td>
@@ -28,10 +30,10 @@
             <td><?php echo $r->saldo; ?></td>
 
             <td>
-                <a href="?c=saldos&a=Mas&id_prod=<?php echo $r->id_prod; ?>">Agregar</a>
+                <a href="?c=saldos&a=Mas&id_saldo=<?php echo $r->id_saldo; ?>">Agregar</a>
             </td>
             <td>
-                <a href="?c=saldos&a=Menos&id_prod=<?php echo $r->id_prod; ?>">Quitar</a>
+                <a href="?c=saldos&a=Menos&id_saldo=<?php echo $r->id_saldo; ?>">Quitar</a>
             </td>
         </tr>
     <?php endforeach; ?>

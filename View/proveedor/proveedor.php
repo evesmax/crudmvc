@@ -24,9 +24,6 @@
             <td>
                 <a href="?c=proveedor&a=Crud&id_prov=<?php echo $r->id_prov; ?>">Editar</a>
             </td>
-            <td>
-                <a onclick="javascript:return confirm('¿Seguro de eliminar este registro?');" href="?c=proveedor&a=Eliminar&id_prov=<?php echo $r->id_prov; ?>">Eliminar</a>
-            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>

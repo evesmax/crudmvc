@@ -1,15 +1,15 @@
 <?php
-class producto
+
+$producto;
+class producto 
 {
 	private $pdo;
-
     public $id_prod;
     public $id_prov;
     public $nombreprod;
     public $costo;
-	public $bodega;
 	public $cantidad;
-    
+	public $bodega;
 	public function __CONSTRUCT()
 	{
 		try
@@ -52,35 +52,11 @@ class producto
 		}
 	}
 
-	public function Registrar(producto $data)
-	{
-		try
-		{
-		$sql = "CALL altaProducto (?, ?, ?, ?, ?)";
-
-		$this->pdo->prepare($sql)
-		     ->execute(
-				array(
-                    $data->nombreprod,
-                    $data->id_prov,
-                    $data->bodega,
-                    $data->cantidad,
-					$data->costo
-                )
-			);
-		} catch (Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
-
 	public function Eliminar($id_prod)
 	{
 		try
 		{
-			$stm = $this->pdo
-			            ->prepare("DELETE FROM producto WHERE id_prod = ?");
-
+			$stm = $this->pdo->prepare("DELETE FROM producto WHERE id_prod = ?");
 			$stm->execute(array($id_prod));
 		} catch (Exception $e)
 		{
@@ -92,19 +68,18 @@ class producto
 	{
 		try
 		{
+			//Sentencia SQL para actualizar los datos.
 			$sql = "UPDATE producto SET
-						nombre          = ?,
-						costo        = ?,
-						id_prov		= ?,
+						nombreprod          = ?,
+            			costo        = ?
 				    WHERE id_prod = ?";
-
+			//Ejecución de la sentencia a partir de un arreglo.
 			$this->pdo->prepare($sql)
 			     ->execute(
 				    array(
-                        $data->nombre,
+                        $data->nombreprod,
                         $data->costo,
-                        $data->id_prov,
-						$data->id_prod
+                        $data->id_prod
 					)
 				);
 		} catch (Exception $e)
@@ -113,4 +88,21 @@ class producto
 		}
 	}
 
+	public function Registrar(producto $data){
+		try{
+			$sql = "CALL altaProducto (?,?,?,?,?)";
+			$this->pdo->prepare($sql)->execute(
+				array(
+					$data->nombreprod,
+					$data->id_prov,
+					$data->bodega,
+					$data->cantidad,
+					$data->costo
+				)
+			);
+		} catch (Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
 }

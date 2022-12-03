@@ -58,6 +58,7 @@ class ProductoController{
     public function Editar(){
         $prod = new producto();
 
+        $prod->id_prod = $_REQUEST['id_prod'];
         $prod->id_prov = $_REQUEST['id_prov'];
         $prod->nombreprod = $_REQUEST['nombreprod'];
         $prod->costo = $_REQUEST['costo'];
@@ -66,4 +67,5 @@ class ProductoController{
 
         header('Location: index.php?c=producto');
     }
+    
 }

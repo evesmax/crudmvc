@@ -5,15 +5,14 @@
                     <footer class="footer-distributed">
 
 			                <div class="footer-right">
-				                <a href="https://twitter.com/rbaenan"><i class="fa fa-twitter"></i></a>
-				                <a href="https://github.com/rbaena"><i class="fa fa-github"></i></a>
+				                <a href="https://github.com/HatterAlice"><i class="fa fa-github"></i></a>
                             </div>
 
 			                <div class="footer-left">
 				                <p class="footer-links">
 					                <a href="index.php">Inicio</a>
 				                </p>
-				                <p>Proyecto Base de Datos (Avance)</p>
+				                <p>Proyecto Base de Datos</p>
 			                </div>
 		                </footer>
                 </div>

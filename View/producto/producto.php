@@ -14,7 +14,7 @@
             <th style="width:120px;">NIT Proveedor</th>
             <th style="width:120px;">Nombre Producto</th>
             <th style="width:120px;">Precio Unitario</th>
-            <th style="width:120px;">Descripción</th>
+            <th style="width:120px;">Opciones</th>
         </tr>
     </thead>
     <tbody>
@@ -26,9 +26,6 @@
             <td><?php echo $r->costo; ?></td>
             <td>
                 <a href="?c=producto&a=Crud&id_prod=<?php echo $r->id_prod; ?>">Editar</a>
-            </td>
-            <td>
-                <a onclick="javascript:return confirm('¿Seguro de eliminar este registro?');" href="?c=producto&a=Eliminar&id_prod=<?php echo $r->id_prod; ?>">Eliminar</a>
             </td>
         </tr>
     <?php endforeach; ?>

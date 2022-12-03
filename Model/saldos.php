@@ -40,12 +40,12 @@ class saldo
 		}
 	}
 
-	public function Obtener($id_saldo)
+	public function Obtener($id_prod)
 	{
 		try
 		{
-			$stm = $this->pdo->prepare("SELECT * FROM saldos WHERE id_saldo = ?");
-			$stm->execute(array($id_saldo));
+			$stm = $this->pdo->prepare("SELECT id_saldo FROM saldos WHERE id_saldo = ?");
+			$stm->execute(array($id_prod));
 			return $stm->fetch(PDO::FETCH_OBJ);
 		} catch (Exception $e)
 		{
@@ -57,13 +57,13 @@ class saldo
 	{
 		try
 		{
-			$sql = "CALL restProd ( ?, ?)";
+			$sql = "CALL restProd (?, ?)";
 
 			$this->pdo->prepare($sql)
 			     ->execute(
 				    array(
                         $data->cantidad,
-                        $data->id_prod
+                        $data->id_saldo
 					)
 				);
 		} catch (Exception $e)
@@ -76,13 +76,13 @@ class saldo
 	{
 		try
 		{
-			$sql = "CALL sumProd ( ?, ?)";
+			$sql = "CALL sumProd (?, ?)";
 
 			$this->pdo->prepare($sql)
 			     ->execute(
 				    array(
                         $data->cantidad,
-                        $data->id_prod
+                        $data->id_saldo
 					)
 				);
 		} catch (Exception $e)

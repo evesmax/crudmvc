@@ -9,10 +9,18 @@
 
 <form id="frm-producto" action="?c=producto&a=Guardar" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        
         <label>ID proveedor</label>
         <input type="text" name="id_prov" value="<?php echo $prod->id_prov; ?>" class="form-control" placeholder="Ingrese ID de proveedor" data-validacion-tipo="requerido|min:20" />
     </div>
+
+<!--<div class="form-group">
+        <label>Bodega</label>
+        <select class="form-select" aria-label="Default select example">
+            <option selected value="<?php echo $prod->bodega; ?>">Bodega1</option>
+            <option value="<?php echo $prod->bodega; ?>">Bodega2</option>
+            <option value="<?php echo $prod->bodega; ?>">Bodega3</option>
+        </select>
+    </div>-->
 
     <div class="form-group">
         <label>Bodega</label>
@@ -21,7 +29,7 @@
 
     <div class="form-group">
         <label>Cantidad</label>
-        <input type="text" name="cantidad" value="<?php echo $prod->cantidad; ?>" class="form-control" placeholder="Ingrese Cantidad" data-validacion-tipo="requerido|min:20" />
+        <input type="number" name="cantidad" value="<?php echo $prod->cantidad; ?>" class="form-control" placeholder="Ingrese Cantidad" data-validacion-tipo="requerido|min:20" />
     </div>
 
     <div class="form-group">

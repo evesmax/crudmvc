@@ -1,18 +1,18 @@
 <h1 class="page-header">
-    <?php echo $prod->id_saldo != null ? $prod->bodega : 'Nuevo Registro'; ?>
+    Quitar
 </h1>
 
 <ol class="breadcrumb">
   <li><a href="?c=saldos">Saldos</a></li>
-  <li class="active"><?php echo $prod->id_saldo!= null ? $prod->bodega : 'Agregar Producto'; ?></li>
+  <li>Quitar Producto</li>
 </ol>
 
 <form id="frm-saldo" action="?c=saldos&a=Quitar" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="id_prod" value="<?php echo $prod->id_prod; ?>" />
+    <input type="hidden" name="id_saldo" value="<?php echo $prod->id_saldo; ?>" />
 
     <div class="form-group">
         <label>Cantidad</label>
-        <input type="text" name="cantidad" value="<?php echo $prod->cantidad; ?>" class="form-control" placeholder="Ingrese la cantidad a quitar" data-validacion-tipo="requerido|min:10" />
+        <input type="number" name="cantidad" value="<?php echo $prod->cantidad; ?>" class="form-control" placeholder="Ingrese la cantidad a quitar" data-validacion-tipo="requerido|min:10" />
     </div>
 
     <div class="text-right">
