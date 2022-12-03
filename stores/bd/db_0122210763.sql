@@ -1,5 +1,3 @@
-create database juegos;
-use juegos;
 
 create table t_juegos (id_juego int auto_increment, 
 	nombre varchar(150), 
