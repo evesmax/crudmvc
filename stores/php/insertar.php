@@ -4,9 +4,9 @@
 
 	$conexion=conexion();
 
-	$nombre=$_POST['nombrej'];
-	$anio=$_POST['anioj'];
-	$empresa=$_POST['empresaj'];
+	$nombre=$_PoST['nombrej'];
+	$anio=$_PoST['anioj'];
+	$empresa=$_PoST['empresaj'];
 
 	$sql="CALL sp_insertarDatos('$nombre','$anio','$empresa')";
 

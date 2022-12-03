@@ -3,7 +3,7 @@
 	require_once "conexion.php";
 	$conexion=conexion();
 
-	$id=$_POST['idjuego'];
+	$id=$_PoST['idjuego'];
 	$sql="CALL sp_obtenerRegistro($id)";
 
 	$result=mysqli_query($conexion,$sql);
