@@ -9,14 +9,7 @@
 
 </head>
 <body>
-	<div class="container">
-		<br>
-		<h1>CRUD JUEGOS</h1>
-		<hr>
-		<div class="row">
-			<div class="col-sm-12">
-				<div id="tablastores"></div>
-			</div>
+	<div 
 		</div>
 	</div>
 
