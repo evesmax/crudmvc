@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tropiko</title>
+
+
+  <script>
+    function log_out() {
+      sessionStorage.clear()
+      window.location.reload()
+      dispatchEvent(new Event('load'));
+    }
+  </script>
+
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Tropiko
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="productos.html"> Productos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="comprados.html">Pedidos</a>
+                </li>
+                <li id="perfil" class="nav-item">
+                  <a class="nav-link" href="perfil.html">Perfil</a>
+                </li>
+                <li id="registro" class="nav-item">
+                  <a class="nav-link" href="registro.html">Registro</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="usuarios.html">Usuarios</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="crearProducto.html">Agregar Producto </a>
+                </li>
+              </ul>
+
+            </div>
+            <div id="saludo">Hola <p id="usu"></p>
+            </div>
+            <div class="quote_btn-container ml-0 ml-lg-4 d-flex justify-content-center">
+              <a id="login" href="login.html">
+                Login
+              </a>
+              <input id="logout" type="button" onclick="log_out()" value="Logout">
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- formulario -->
+    <section class="contact_section layout_padding">
+      <div class="container">
+        <h2 class="font-weight-bold">
+          Editar Estatus
+        </h2>
+        <div class="row">
+          <div class="col-md-8 mr-auto">
+            <form class="editarEstatus" action="" id="editarEstatus">
+              <div class="contact_form-container">
+                <div>
+                  <div>
+                    <!-- <input type="text" placeholder="Estatus del pedido" name="estatus_pedido" id="estatus_pedido"> -->
+                    <label for="estatus_pedido">Estatus del pedido: </label>
+
+                    <select name="estatus_pedido" id="estatus_pedido">
+                        <option value="">--Elige una opción--</option>
+                        <option value="En proceso">En proceso</option>
+                        <option value="Entregado">Entregado</option>
+                        <option value="Finalizado">Finalizado</option>
+                    </select>
+                  </div>
+
+                  <div class="mt-5">
+                    <button type="submit">
+                      send
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end formulario -->
+  </div>
+
+  <script>
+    const tipo_usuario = sessionStorage.getItem("tipo_usuario");
+
+    window.onload = async () => {
+
+      if (tipo_usuario == 'cliente' || !tipo_usuario) {
+        document.getElementById("crear").style.visibility = "hidden";
+        document.getElementById("usuarios").style.visibility = "hidden";
+        document.getElementById("registro").style.visibility = "hidden";
+      }
+      if (!tipo_usuario) {
+        document.getElementById("perfil").style.visibility = "hidden";
+        document.getElementById("saludo").style.visibility = "hidden";
+        document.getElementById("logout").style.visibility = "hidden";
+      } else {
+        document.getElementById("login").style.visibility = "hidden";
+        document.getElementById("usu").innerHTML = tipo_usuario;
+      }
+
+      //íngresa los datos como value al form
+      let searchArray = window.location.search.split("=");
+      let id = searchArray[1];
+      console.log(id);
+
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:4000/api/productos/pedir/" + id, requestOptions)
+        .then(response => response.json())
+        .then(result =>  document.getElementById("estatus_pedido").value = result.estatus_pedido)
+        .catch(error => console.log('error', error));     
+    }
+
+    
+    const form = document.getElementById("editarEstatus");
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      //ingresar datos
+      let searchArray = window.location.search.split("=");
+      let editarEstatusData = new FormData(form);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      console.log(editarEstatusData.get("estatus_pedido"));
+      var raw = JSON.stringify({
+        "estatus_pedido": editarEstatusData.get("estatus_pedido")
+      });
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:4000/api/productos/pedidos/" + searchArray[1], requestOptions)
+        .then(response => response.json())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+        alert("SUBMIT HECHO");
+      
+        window.location.href = "./comprados.html";
+    })
+    
+
+    
+
+
+
+
+  </script>
+
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+    <p>
+      Copyright &copy; 2023 Tropiko Gdl
+
+    </p>
+  </section>
+
+  <!-- footer section -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+
+
+
+</body>
+
+</html>

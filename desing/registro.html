@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <script defer src="./js/login.js"></script>
+
+  <script>
+    function log_out() {
+      sessionStorage.clear()
+      window.location.reload()
+      dispatchEvent(new Event('load'));
+    }
+  </script>
+
+  <title>Tropiko</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="hero_area sub_pages">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="index.html">
+
+            <script>
+              const tipo_usuario = sessionStorage.getItem("tipo_usuario");
+              console.log(tipo_usuario)
+              window.onload = async () => {
+                if (tipo_usuario == 'cliente' || !tipo_usuario) {
+                  document.getElementById("crear").style.visibility = "hidden";
+                  document.getElementById("usuarios").style.visibility = "hidden";
+                  document.getElementById("registro").style.visibility = "hidden";
+                }
+                if (!tipo_usuario) {
+                  document.getElementById("perfil").style.visibility = "hidden";
+                  document.getElementById("saludo").style.visibility = "hidden";
+                  document.getElementById("logout").style.visibility = "hidden";
+                  
+                } else {
+                  document.getElementById("login").style.visibility = "hidden";
+                  document.getElementById("usu").innerHTML = tipo_usuario;
+                }
+              }
+            </script>
+
+            <span>
+              Tropiko
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="productos.html"> Productos</a>
+                </li>
+                <li id="pedidos" class="nav-item">
+                  <a class="nav-link" href="comprados.html">Pedidos</a>
+                </li>
+               
+                <li id="perfil" class="nav-item active">
+                  <a class="nav-link" href="perfil.html">Perfil</a>
+                </li>
+                <li id="registro" class="nav-item">
+                  <a class="nav-link" href="registro.html">Registro</a>
+                </li>
+                <li id="usuarios" class="nav-item active">
+                  <a class="nav-link" href="usuarios.html">Usuarios</a>
+                </li>
+                <li id="crear" class="nav-item active">
+                  <a class="nav-link" href="crearProducto.html">crearProducto </a>
+                </li>
+              </ul>
+             
+            </div>
+            <div id="saludo">Hola <p id="usu"></p></div>
+            <div class="quote_btn-container ml-0 ml-lg-4 d-flex justify-content-center">
+              <a id="login" href="login.html">
+                Login
+              </a>
+              <input id="logout" type="button" onclick ="log_out()" value="Logout">
+                
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+
+  </div>
+
+
+
+  <!-- contact section -->
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <h2 class="font-weight-bold">
+        Registrate!
+      </h2>
+      <h2>Crea una cuenta para poder comprar en Tropiko</h2>
+      <div class="row">
+        <div class="col-md-8 mr-auto">
+          <form action="">
+            <div class="contact_form-container">
+              <div>
+                <div>
+                  <input id="nombre" type="text" placeholder="Nombre">
+                </div>
+                <div>
+                  <input id="apellido" type="text" placeholder="Apellido">
+                </div>
+                <div>
+                  <input id="correo" type="email" placeholder="Correo Electronico">
+                </div>
+                <div>
+                  <input id="contraseña" type="password" placeholder="Contraseña">
+                </div>
+                <div class="mt-5">
+                  <!-- <button type="submit" onclick = "sign_in(document.getElementById('nombre').value, document.getElementById('apellido').value,
+                  document.getElementById('correo').value,document.getElementById('contraseña').value)" >
+                    Guardar
+                  </button>
+ -->
+                  <input type="button" onclick="sign_in(document.getElementById('nombre').value, document.getElementById('apellido').value,
+                  document.getElementById('correo').value,document.getElementById('contraseña').value)"
+                    value="Guardar">
+                  <!-- <a href="login.html" class="text-uppercase custom_dark-btn">
+                    Login
+                  </a> -->
+
+                </div>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+
+
+
+
+
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+    <p>
+      Copyright &copy; 2019 All Rights Reserved By
+      <a href="https://html.design/">Free Html Templates</a>
+    </p>
+  </section>
+  <!-- footer section -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+
+
+  <!-- end google map js -->
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+###
+POST  http://localhost:4500/api/productos HTTP/1.1  
+Content-Type: application/json
+
+{"nombre":"Paleta",
+"descripcion":"paleta de plastico decorativa",
+"precio":150,
+"cantidad_disponible":5,
+"imagen":"https://files.cults3d.com/uploaders/15255787/illustration-file/6229b49b-7642-4f10-9419-8900d56c622f/MeltedPopsicle1.PNG"
+}
+
+###
+GET   http://localhost:4500/api/productos HTTP/1.1
+
+###
+GET http://localhost:4500/api/productos/63f706acd0f75ea76ae08cb8  HTTP/1.1
+
+###
+PUT http://localhost:4500/api/productos/63f57cb0559a40632a79a3fd HTTP/1.1
+Content-Type: application/json
+
+{"nombre":"Dinosaurio Juguete",
+"descripcion":"Juguete con forma de dinosaurio",
+"precio":150,
+"cantidad_disponible":5,
+"imagen":"https://c8.alamy.com/zoomses/9/75d035f55504433cad4f66996378e63d/ppm3wa.jpg"
+}
+
+
+###
+DELETE http://localhost:4500/api/productos/63f706acd0f75ea76ae08cb8  HTTP/1.1
+
+
+//MYSLQ--------------
+
+//REQUEST MYSQL
+###
+GET http://localhost:4500/api HTTP/1.1
+
+
+//insertar datos
+###
+POST http://localhost:4500/api HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre":"Daniel",
+    "apellido":"Trujillo",
+    "correo":"Dani@gmail.com",
+    "contraseña":"123"
+    
+}
+
+
+
+//DELETE MYSQL
+###
+DELETE  http://localhost:4500/api/1 HTTP/1.1
+
+###
+PUT  http://localhost:4500/api/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre":"Daniel",
+    "apellido":"Rodriguez",
+    "correo":"Dani@gmail.com",
+    "contraseña":"123"
+    
+}

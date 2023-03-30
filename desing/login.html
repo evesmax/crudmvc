@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <script defer src="./js/login.js"></script>
+
+  
+<script>
+  const tipo_usuario = sessionStorage.getItem("tipo_usuario");
+    window.onload = async () => {
+
+      if (tipo_usuario == 'cliente' || !tipo_usuario){
+        document.getElementById("crear").style.visibility="hidden"; 
+        document.getElementById("usuarios").style.visibility="hidden"; 
+        document.getElementById("registro").style.visibility="hidden"; 
+      }
+      if (!tipo_usuario) {
+        document.getElementById("perfil").style.visibility="hidden";
+ 
+  
+          
+      }else {
+        document.getElementById("login").style.visibility="hidden";
+        document.getElementById("usu").innerHTML=tipo_usuario;
+      }
+    }
+</script>
+
+
+  
+  <title>Tropiko</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+
+  
+
+  <div class="hero_area sub_pages">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              Tropiko
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="productos.html"> Productos</a>
+                </li>
+                <li id="pedidos" class="nav-item">
+                  <a class="nav-link" href="comprados.html">Pedidos</a>
+                </li>
+                <li id="perfil" class="nav-item active">
+                  <a class="nav-link" href="perfil.html">Perfil</a>
+                </li>
+                <li id="registro" class="nav-item">
+                  <a class="nav-link" href="registro.html">Registro</a>
+                </li>
+                <li id="usuarios" class="nav-item active">
+                    <a class="nav-link" href="usuarios.html">Usuarios</a>
+                  </li>
+                  <li id="crear" class="nav-item active">
+                    <a class="nav-link" href="crearProducto.html">Agregar Producto</a>
+                  </li>
+              </ul>
+             
+            </div>
+           
+            <div class="quote_btn-container ml-0 ml-lg-4 d-flex justify-content-center">
+              <a id="login" href="login.html">
+              Login
+              </a>
+       
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+
+  </div>
+
+
+
+  <!-- contact section -->
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <h2 class="font-weight-bold">
+        Login
+      </h2>
+      <p>Ingresa a tu cuenta</p>
+      <div class="row">
+        <div class="col-md-8 mr-auto">
+          <form action="">
+            <div class="contact_form-container">
+              <div>
+                <div>
+                  <input type="email" id="email" placeholder="Correo Electronico" required>
+                </div>
+                <div>
+                  <input type="password" id="password" placeholder="contraseña" required>
+                </div>
+               
+                <div id="login" class="mt-5" >
+                  <input type = "button" onclick = "log_in(document.getElementById('email').value, document.getElementById('password').value)" value = "Ingresar">                  
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+<br>
+<br>
+<br>
+<br>
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section">
+    <p>
+      Copyright &copy; 2019 All Rights Reserved By
+      <a href="https://html.design/">Free Html Templates</a>
+    </p>
+  </section>
+  <!-- footer section -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+
+  <!-- google map js -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8eaHt9Dh5H57Zh0xVTqxVdBFCvFMqFjQ&callback=initMap">
+  </script>
+  <!-- end google map js -->
+</body>
+
+</html>
