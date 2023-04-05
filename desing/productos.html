@@ -31,7 +31,7 @@
         document.getElementById("login").style.visibility="hidden";
         document.getElementById("usu").innerHTML=tipo_usuario;
       }
-      const res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com/api/productos")
+      const res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com/productos")
       const productos = await res.json();
       const listaProductos = document.getElementById("listaProductos")
       let elementos = "";
