@@ -1,7 +1,7 @@
 //codigo del servidor
 
 const express = require ('express');
-const apiRouter = require('./routes/RouterApi');
+const apiRouter = require('./routes/routerApi');
 const cors = require('cors');
 const app = express(); 
 
