@@ -38,7 +38,7 @@
       
       let searchArray = window.location.search.split("=");
       console.log(searchArray);
-      const res = await fetch("http://localhost:4000/api/productos/" + searchArray[1])
+      const res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/productos/" + searchArray[1])
       const productos = await res.json()
       console.log(productos);
       const lista = document.getElementById("lista")

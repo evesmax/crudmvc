@@ -45,10 +45,10 @@
 
       let res
       if (tipo_usuario == 'admin') {
-        res = await fetch("http://localhost:4000/api/productos/admin")
+        res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/productos/admin")
 
       } else {
-        res = await fetch("http://localhost:4000/api/productos/usuario/" + correo)
+        res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/productos/usuario/" + correo)
       }
 
 

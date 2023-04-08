@@ -14,7 +14,7 @@ function log_in(correo, contraseña){
     redirect: 'follow'
     };
 
-    fetch("http://localhost:4000/api/usuarios/login", requestOptions)
+    fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/usuarios/login", requestOptions)
     .then(response => response.text())
     .then(result => {
         console.log(result)
@@ -46,7 +46,7 @@ function sign_in(nombre, apellido, correo, contraseña){
     redirect: 'follow'
     };
 
-    fetch("http://localhost:4000/api/usuarios", requestOptions)
+    fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/usuarios", requestOptions)
     .then(response => response.text())
     .then(result => console.log(result))
     .catch(error => console.log('error', error));

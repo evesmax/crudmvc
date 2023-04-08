@@ -38,7 +38,7 @@
         document.getElementById("usu").innerHTML=tipo_usuario;
       }
 
-            const res = await fetch("http://localhost:4000/api/usuarios")
+            const res = await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/usuarios")
             const usuarios = await res.json();
             const listaUsu = document.getElementById("listaUsu")
             let elementos = "";

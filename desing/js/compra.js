@@ -1,6 +1,6 @@
 async function  hacer_compra (id_producto, ) {
     const correo = sessionStorage.getItem("correo");
-    await fetch("http://localhost:4000/api/productos/compra/"+ id_producto, {
+    await fetch("http://ec2-54-162-46-225.compute-1.amazonaws.com:4000/api/productos/compra/"+ id_producto, {
         method: "POST",
         body: JSON.stringify({
           "email_cliente": correo
