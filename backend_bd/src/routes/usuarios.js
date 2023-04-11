@@ -38,10 +38,12 @@ router.post('/login', async (req, res) => {
         const [usuarios] = await db.execute('SELECT * FROM usuarios WHERE correo=? and contraseña=?', [usuario,contraseña]);
 
         if (usuarios.length == 0){
-            throw new Error('Usuario invalido')
+            res.status(503).send('Usuario invalido')
+        }else{
+            res.send(usuarios[0].tipo);
         }
 
-        res.send(usuarios[0].tipo);
+       
     } catch (error) {
         console.log(error);
         res.send(error);
